@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Herança de Templates - Jinja2{% endblock %}
+
+{% block content %}
+<section>
+    <hgroup>
+        <h1>Herança de Templates com Jinja2</h1>
+        <p>Entenda como funciona a herança de templates e reutilização de código</p>
+    </hgroup>
+</section>
+
+<section>
+    <h2>O que é Jinja2?</h2>
+
+    <article>
+        <p>
+            <strong>Jinja2</strong> é um motor de templates moderno e amigável para Python.
+            Ele permite criar templates HTML dinâmicos com uma sintaxe simples e elegante,
+            separando a lógica de apresentação do código Python.
+        </p>
+        <p>
+            Jinja2 é amplamente utilizado em frameworks web como Flask e pode ser usado
+            standalone, como neste projeto.
+        </p>
+    </article>
+</section>
+
+<section>
+    <h2>Recursos do Jinja2 Utilizados</h2>
+
+    <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <article>
+            <h3>1. Herança de Templates</h3>
+            <p>Permite criar um template base e estender em páginas específicas.</p>
+            <pre><code>{% raw %}{% extends "base.html" %}{% endraw %}</code></pre>
+        </article>
+
+        <article>
+            <h3>2. Blocos de Conteúdo</h3>
+            <p>Define seções que podem ser sobrescritas em templates filhos.</p>
+            <pre><code>{% raw %}{% block content %}
+  ...conteúdo...
+{% endblock %}{% endraw %}</code></pre>
+        </article>
+
+        <article>
+            <h3>3. Includes</h3>
+            <p>Inclui componentes reutilizáveis como navbar, footer, etc.</p>
+            <pre><code>{% raw %}{% include 'includes/navbar.html' %}{% endraw %}</code></pre>
+        </article>
+
+        <article>
+            <h3>4. Variáveis</h3>
+            <p>Exibe dados dinâmicos passados do Python.</p>
+            <pre><code>{{ "{{ variavel }}" }}
+{{ "{{ objeto.atributo }}" }}</code></pre>
+        </article>
+
+        <article>
+            <h3>5. Estruturas de Controle</h3>
+            <p>Loops e condicionais para lógica de apresentação.</p>
+            <pre><code>{% raw %}{% for item in lista %}
+  {{ item }}
+{% endfor %}
+
+{% if condicao %}
+  ...
+{% endif %}{% endraw %}</code></pre>
+        </article>
+
+        <article>
+            <h3>6. Filtros</h3>
+            <p>Transformam valores antes de exibi-los.</p>
+            <pre><code>{{ "{{ texto|upper }}" }}
+{{ "{{ lista|length }}" }}</code></pre>
+        </article>
+    </div>
+</section>
+
+<section>
+    <h2>Estrutura do Projeto</h2>
+
+    <article>
+        <h3>Organização dos Arquivos</h3>
+        <pre><code>./
+├── app.py                      # Servidor HTTP com Jinja2
+├── README.md
+└── templates/
+    ├── base.html               # Template base
+    ├── index.html              # Página inicial
+    ├── templates.html          # Esta página
+    ├── about.html              # Sobre o canal
+    └── includes/
+        └── navbar.html         # Menu reutilizável</code></pre>
+    </article>
+</section>
+
+<section>
+    <h2>Como Funciona a Herança</h2>
+
+    <article>
+        <h3>1. Template Base (base.html)</h3>
+        <p>Define a estrutura HTML principal com blocos que podem ser sobrescritos:</p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR" data-theme="light"&gt;
+&lt;head&gt;
+    &lt;title&gt;{% raw %}{% block title %}{% endblock %}{% endraw %}&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://cdn.../pico.min.css"&gt;
+    {% raw %}{% block extra_css %}{% endblock %}{% endraw %}
+&lt;/head&gt;
+&lt;body&gt;
+    {% raw %}{% include 'includes/navbar.html' %}{% endraw %}
+
+    &lt;main class="container"&gt;
+        {% raw %}{% block content %}{% endblock %}{% endraw %}
+    &lt;/main&gt;
+
+    &lt;footer class="container"&gt;
+        {% raw %}{% block footer %}{% endblock %}{% endraw %}
+    &lt;/footer&gt;
+
+    {% raw %}{% block extra_js %}{% endblock %}{% endraw %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </article>
+
+    <article>
+        <h3>2. Template Filho (exemplo: index.html)</h3>
+        <p>Estende o base.html e sobrescreve os blocos necessários:</p>
+        <pre><code>{% raw %}{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    &lt;h1&gt;Conteúdo da página&lt;/h1&gt;
+    &lt;p&gt;Olá, {{ nome }}!&lt;/p&gt;
+{% endblock %}{% endraw %}</code></pre>
+    </article>
+
+    <article>
+        <h3>3. Configuração no Python (app.py)</h3>
+        <p>Configurando o Jinja2 e renderizando templates:</p>
+        <pre><code>from jinja2 import Environment, FileSystemLoader
+
+# Configurar o ambiente Jinja2
+env = Environment(loader=FileSystemLoader('templates'))
+
+# Carregar e renderizar template
+template = env.get_template('index.html')
+html = template.render(
+    nome='Regis',
+    videos=[...]
+)</code></pre>
+    </article>
+</section>
+
+<section>
+    <h2>Vantagens da Herança de Templates</h2>
+
+    <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <article>
+            <h3>Reutilização de Código</h3>
+            <p>
+                Evite duplicação definindo uma vez a estrutura HTML, CSS e JavaScript
+                comum a todas as páginas.
+            </p>
+        </article>
+
+        <article>
+            <h3>Manutenção Facilitada</h3>
+            <p>
+                Altere o layout em um único lugar (base.html) e todas as páginas
+                são atualizadas automaticamente.
+            </p>
+        </article>
+
+        <article>
+            <h3>Consistência Visual</h3>
+            <p>
+                Garanta que todas as páginas sigam o mesmo padrão de design
+                e estrutura.
+            </p>
+        </article>
+
+        <article>
+            <h3>Organização</h3>
+            <p>
+                Separe concerns: estrutura base, componentes e conteúdo específico
+                de cada página.
+            </p>
+        </article>
+
+        <article>
+            <h3>Flexibilidade</h3>
+            <p>
+                Cada página pode sobrescrever apenas os blocos necessários,
+                mantendo o resto do template base.
+            </p>
+        </article>
+
+        <article>
+            <h3>Componentes Reutilizáveis</h3>
+            <p>
+                Use includes para compartilhar componentes como navbar, sidebar,
+                cards, etc.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section>
+    <article>
+        <h3>Saiba Mais</h3>
+        <p>
+            Para aprender mais sobre Jinja2, templates e desenvolvimento web com Python,
+            visite o <a href="/sobre">canal Regis do Python</a> no YouTube.
+        </p>
+    </article>
+</section>
+{% endblock %}

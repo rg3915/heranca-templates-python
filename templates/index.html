@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Projeto Jinja2{% endblock %}
+
+{% block content %}
+<section>
+    <hgroup>
+        <h1>Boas-vindas, {{ nome }}!</h1>
+        <p>Projeto de demonstração de herança de templates com Jinja2 e PicoCSS</p>
+    </hgroup>
+
+    <p>
+        Este projeto demonstra na prática como usar <strong>Jinja2</strong> para criar templates
+        HTML dinâmicos com Python. Explore as páginas para entender melhor cada conceito.
+    </p>
+
+    <div class="grid">
+        <article>
+            <h3>Herança de Templates</h3>
+            <p>Aprenda como funciona a herança de templates, blocos, includes e muito mais.</p>
+            <a href="/templates" role="button">Ver Templates</a>
+        </article>
+
+        <article>
+            <h3>Sobre o Canal</h3>
+            <p>Conheça o canal Regis do Python e aprenda Python e Django.</p>
+            <a href="/sobre" role="button" class="secondary">Saiba Mais</a>
+        </article>
+    </div>
+</section>
+
+<section>
+    <h2>Demonstração Prática: Variáveis e Loops</h2>
+
+    <article>
+        <h3>Variáveis Dinâmicas</h3>
+        <p>
+            A mensagem de boas-vindas acima usa a variável <code>{{ "{{ nome }}" }}</code>,
+            que foi passada do Python com o valor <strong>"{{ nome }}"</strong>.
+        </p>
+        <pre><code>template.render(nome='{{ nome }}')</code></pre>
+    </article>
+
+    <article>
+        <h3>Loop sobre Lista de Objetos</h3>
+        <p>
+            Os vídeos abaixo demonstram o uso de <code>{% raw %}{% for video in videos %}{% endraw %}</code>
+            para iterar sobre uma lista de dicionários passada do Python.
+        </p>
+        <details>
+            <summary>Ver código do loop</summary>
+            <pre><code>{% raw %}{% for video in videos %}
+  &lt;article&gt;
+    &lt;img src="{{ video.thumbnail }}"&gt;
+    &lt;h3&gt;{{ video.titulo }}&lt;/h3&gt;
+    &lt;p&gt;{{ video.descricao }}&lt;/p&gt;
+    &lt;a href="{{ video.link }}"&gt;Assistir&lt;/a&gt;
+  &lt;/article&gt;
+{% endfor %}{% endraw %}</code></pre>
+        </details>
+    </article>
+</section>
+
+<section>
+    <h2>Vídeos sobre Django - Canal Regis do Python</h2>
+
+    <div class="grid">
+        {% for video in videos %}
+        <article>
+            <header>
+                <img src="{{ video.thumbnail }}" alt="{{ video.titulo }}" style="width: 100%; height: auto; border-radius: 8px;">
+            </header>
+            <h3>{{ video.titulo }}</h3>
+            <p>{{ video.descricao }}</p>
+            <footer>
+                <a href="{{ video.link }}" target="_blank" rel="noopener" role="button">Assistir no YouTube</a>
+            </footer>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section>
+    <article>
+        <h3>Quer aprender mais?</h3>
+        <p>
+            Visite a página <a href="/templates">Herança de Templates</a> para entender
+            em detalhes como este projeto foi construído, ou conheça o
+            <a href="/sobre">Canal Regis do Python</a> para mais conteúdo sobre Python e Django.
+        </p>
+    </article>
+</section>
+{% endblock %}
